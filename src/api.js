@@ -8,8 +8,9 @@ const cors = require('cors');
 const request = require('request');
 
 app.use(cors({
-    origin: "http://localhost:5173"
+    origin: "https://jgandrade.netlify.app/"
 }));
+
 app.use(express.json());
 
 router.post('/verify', (req, res) => {
