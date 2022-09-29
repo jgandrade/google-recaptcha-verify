@@ -7,6 +7,11 @@ const router = express.Router();
 const cors = require('cors');
 const request = require('request');
 
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
+app.use(express.json());
+
 router.post('/verify', (req, res) => {
     if (
         req.body.captcha === undefined ||
