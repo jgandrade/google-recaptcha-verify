@@ -8,7 +8,7 @@ const cors = require('cors');
 const request = require('request');
 
 app.use(cors({
-    origin: "https://jgandrade.netlify.app/"
+    origin: "https://jgandrade.netlify.app"
 }));
 
 app.use(express.json());
