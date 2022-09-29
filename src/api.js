@@ -4,23 +4,31 @@ const serverless = require("serverless-http");
 const app = express();
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.json({
-        hello: "hi!"
-    });
-});
+const cors = require('cors');
+const request = require('request');
 
-router.get('/test', (req, res) => {
-    res.json({
-        hello: "test!"
-    });
+router.post('/verify', (req, res) => {
+    if (
+        req.body.captcha === undefined ||
+        req.body.captcha === '' ||
+        req.body.captcha === null
+    ) {
+        return res.send({ status: false, message: "Press captcha" });
+    }
 
-})
 
-router.post('/testpost', (req, res) => {
-    res.json({
-        hello: "hit the POST!"
-    });
+    const secret = "6Lc8Bj4iAAAAAKTvQSSZnWisPSkX-xFArt9N_hdG";
+    const verify = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${req.body.captcha}`
+
+    request(verify, (err, response, body) => {
+        body = JSON.parse(body);
+
+        if (body.success !== undefined && !body.success) {
+            return res.send({ status: false, message: "Failed captcha verification" });
+        }
+
+        return res.send({ status: true, message: "Captcha Passed" });
+    })
 })
 
 app.use(`/.netlify/functions/api`, router);
